@@ -1,0 +1,44 @@
+#include <stdio.h>
+
+int main()
+ {
+    int reference_string[] = {4, 1, 2, 4, 3, 2, 1, 5};
+    int num_pages = sizeof(reference_string) / sizeof(int);
+    int num_frames = 3;
+    int frames[MAX_FRAMES];
+    int i, j, k, page_faults = 0, frame_index = 0, page_found = 0;
+
+    for (i = 0; i < num_frames; i++) 
+{
+        frames[i] = -1;
+    }
+
+    for (i = 0; i < num_pages; i++) 
+{
+        page_found = 0;
+        for (j = 0; j < num_frames; j++)
+ {
+            if (frames[j] == reference_string[i])
+ {
+                page_found = 1;
+                break;
+            }
+        }
+        if (!page_found)
+ {
+            frames[frame_index] = reference_string[i];
+            frame_index = (frame_index + 1) % num_frames;
+            page_faults++;
+        }
+        printf("Page reference: %d - Frames: ", reference_string[i]);
+        for (k = 0; k < num_frames; k++) 
+{
+            printf("%d ", frames[k]);
+        }
+        printf("\n");
+    }
+
+    printf("Number of page faults: %d\n", page_faults);
+
+    return 0;
+}
